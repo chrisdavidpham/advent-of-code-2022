@@ -1,39 +1,40 @@
-import './extensions/arrayExtensions'
+import * as fs from 'fs';
+import * as rd from 'readline';
+import './arrayExtensions'
+import { Rope } from './Rope';
 
-class RopeGrid {
-    width: number;
-    height: number;
-    head: Coordinate;
-    tail: Coordinate;
+var rope = new Rope();
 
-    constructor(width: number, height: number, head: Coordinate, tail: Coordinate, start: Coordinate) {
-        this.width = width;
-        this.height = height;
-        this.head = head;
-        this.tail = tail;
+const stream = fs.createReadStream('input.txt');
+var reader = rd.createInterface(stream);
+
+function execute(command: string, r: Rope): void {
+    const split = command.split(' ');
+    const direction = split[0];
+    const distance = parseInt(split[1]);
+
+    for (var i = 0; i < distance; i++) {
+        switch (direction) {
+            case "U":
+                r.moveNorth();
+                break;
+            case "R":
+                r.moveEast();
+                break;
+            case "D":
+                r.moveSouth();
+                break;
+            case "L":
+                r.moveWest();
+                break;
+        }
     }
 }
 
-class Coordinate {
-    public readonly x: number;
-    public readonly y: number;
+reader.on('line', (l) => {
+    execute(l, rope);
+});
 
-    constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public static compare(c1: Coordinate, c2: Coordinate): boolean {
-        return c1.x == c2.x && c1.y == c2.y;
-    }
-}
-
-var tailHistory = new Array<Coordinate>();
-
-var c1 = new Coordinate(1,2);
-tailHistory.push(c1);
-tailHistory.push(c1);
-console.log(tailHistory.length);
-
-var uniqueTailCoordinates = tailHistory.unique(Coordinate.compare);
-console.log(uniqueTailCoordinates.length);
+reader.on('close', () => {
+    console.log(rope.getUniqueTailPositionCount());
+});
