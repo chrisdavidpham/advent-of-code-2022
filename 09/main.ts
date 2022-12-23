@@ -1,12 +1,11 @@
-import * as fs from 'fs';
-import * as rd from 'readline';
+import * as fs from 'node:fs';
+import * as readline from 'node:readline';
 import './arrayExtensions'
-import { Rope } from './Rope';
+import { Rope } from './rope';
 
-var rope = new Rope();
+const fileReadStream = readline.createInterface(fs.createReadStream('input.txt'));
 
-const stream = fs.createReadStream('input.txt');
-var reader = rd.createInterface(stream);
+var rope = new Rope(10);
 
 function execute(command: string, r: Rope): void {
     const split = command.split(' ');
@@ -15,26 +14,28 @@ function execute(command: string, r: Rope): void {
 
     for (var i = 0; i < distance; i++) {
         switch (direction) {
-            case "U":
+            case 'U':
                 r.moveNorth();
                 break;
-            case "R":
+            case 'R':
                 r.moveEast();
                 break;
-            case "D":
+            case 'D':
                 r.moveSouth();
                 break;
-            case "L":
+            case 'L':
                 r.moveWest();
                 break;
         }
     }
+    console.log(`${direction}: ${r.toString()}`);
+    console.log(r.draw());
 }
 
-reader.on('line', (l) => {
+fileReadStream.on('line', (l) => {
     execute(l, rope);
 });
 
-reader.on('close', () => {
+fileReadStream.on('close', () => {
     console.log(rope.getUniqueTailPositionCount());
 });

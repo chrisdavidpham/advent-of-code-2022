@@ -15,20 +15,24 @@ export class Coordinate {
         return this._y;
     }
 
-    public Up(): void {
+    public up(): void {
         this._y++;
     }
 
-    public Right(): void {
+    public right(): void {
         this._x++;
     }
 
-    public Down(): void {
+    public down(): void {
         this._y--;
     }
 
-    public Left(): void {
+    public left(): void {
         this._x--;
+    }
+
+    public copy(): Coordinate {
+        return new Coordinate(this._x, this._y);
     }
 
     public static compare(c1: Coordinate, c2: Coordinate): boolean {
