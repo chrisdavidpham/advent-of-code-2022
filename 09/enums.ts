@@ -1,11 +1,11 @@
 export enum XDirection {
-    East,
-    West,
+    Right,
+    Left,
     None,
 }
 
 export enum YDirection {
-    North,
-    South,
+    Up,
+    Down,
     None,
 }

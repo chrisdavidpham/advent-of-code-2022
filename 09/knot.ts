@@ -27,16 +27,16 @@ export class Knot {
 
         if (this._tailKnot != null) {
             switch (this._tailYDirection) {
-                case YDirection.North:
+                case YDirection.Up:
                     this._tailYDirection = YDirection.None;
                     return null;
-                case YDirection.South:
+                case YDirection.Down:
                     if (this._tailKnot.tail == null) {
                     switch (this._tailXDirection) {
-                        case XDirection.East:
+                        case XDirection.Right:
                             this._tailXDirection = XDirection.None;
                             return this._tailKnot.moveUpLeft();
-                        case XDirection.West:
+                        case XDirection.Left:
                             this._tailXDirection = XDirection.None;
                             return this._tailKnot.moveUpRight();
                         case XDirection.None:
@@ -45,7 +45,7 @@ export class Knot {
                 }
                 return this._tailKnot.moveUp();
                 case YDirection.None:
-                    this._tailYDirection = YDirection.South;
+                    this._tailYDirection = YDirection.Down;
                     return null;
             }
         }
@@ -59,16 +59,16 @@ export class Knot {
 
         if (this._tailKnot != null) {
             switch (this._tailXDirection) {
-                case XDirection.East:
+                case XDirection.Right:
                     this._tailXDirection = XDirection.None;
                     return null;
-                case XDirection.West:
+                case XDirection.Left:
                     if (this._tailKnot.tail == null) {
                     switch (this._tailYDirection) {
-                        case YDirection.North:
+                        case YDirection.Up:
                             this._tailYDirection = YDirection.None;
                             return this._tailKnot.moveDownRight();
-                        case YDirection.South:
+                        case YDirection.Down:
                             this._tailYDirection = YDirection.None;
                             return this._tailKnot.moveUpRight();
                         case YDirection.None:
@@ -77,7 +77,7 @@ export class Knot {
                 }
                 return this._tailKnot.moveRight();
                 case XDirection.None:
-                    this._tailXDirection = XDirection.West;
+                    this._tailXDirection = XDirection.Left;
                     return null;
             }
         }
@@ -91,13 +91,13 @@ export class Knot {
 
         if (this._tailKnot != null) {
             switch (this._tailYDirection) {
-                case YDirection.North:
+                case YDirection.Up:
                     if (this._tailKnot.tail == null) {
                         switch (this._tailXDirection) {
-                            case XDirection.East:
+                            case XDirection.Right:
                                 this._tailXDirection = XDirection.None;
                                 return this._tailKnot.moveDownLeft();
-                            case XDirection.West:
+                            case XDirection.Left:
                                 this._tailXDirection = XDirection.None;
                                 return this._tailKnot.moveDownRight();
                             case XDirection.None:
@@ -105,11 +105,11 @@ export class Knot {
                         }
                     }
                     return this._tailKnot.moveDown();
-                case YDirection.South:
+                case YDirection.Down:
                     this._tailYDirection = YDirection.None;
                     return null;
                 case YDirection.None:
-                    this._tailYDirection = YDirection.North;
+                    this._tailYDirection = YDirection.Up;
                     return null;
             }
         }
@@ -123,13 +123,13 @@ export class Knot {
 
         if (this._tailKnot != null) {
             switch (this._tailXDirection) {
-                case XDirection.East:
+                case XDirection.Right:
                     if (this._tailKnot.tail == null) {
                         switch (this._tailYDirection) {
-                            case YDirection.North:
+                            case YDirection.Up:
                                 this._tailYDirection = YDirection.None;
                                 return this._tailKnot.moveDownLeft();
-                            case YDirection.South:
+                            case YDirection.Down:
                                 this._tailYDirection = YDirection.None;
                                 return this._tailKnot.moveUpLeft();
                             case YDirection.None:
@@ -137,11 +137,11 @@ export class Knot {
                         }
                     }
                     return this._tailKnot.moveLeft();
-                case XDirection.West:
+                case XDirection.Left:
                     this._tailXDirection = XDirection.None;
                     return null;
                 case XDirection.None:
-                    this._tailXDirection = XDirection.East;
+                    this._tailXDirection = XDirection.Right;
                     return null;
             }
         }
