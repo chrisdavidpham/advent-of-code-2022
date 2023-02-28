@@ -3,6 +3,12 @@ import * as readline from 'node:readline';
 import './arrayExtensions'
 import { Rope } from './rope';
 
+var shouldDraw = false;
+
+if (process.argv[2] && process.argv[2] === '-d') { 
+    shouldDraw = true;
+}
+
 const fileReadStream = readline.createInterface(fs.createReadStream('input.txt'));
 
 var rope = new Rope(10);
@@ -28,13 +34,22 @@ function execute(command: string, r: Rope): void {
                 break;
         }
     }
-    console.log(`${direction}: ${r.toString()}`);
-    console.log(r.draw());
 }
 
-fileReadStream.on('line', (l) => {
-    execute(l, rope);
-});
+if (shouldDraw)
+{
+    fileReadStream.on('line', (l) => {
+        console.log(`${l}: ${rope.toString()}`);
+        execute(l, rope);
+        console.log(rope.draw());
+    });
+}
+else
+{
+    fileReadStream.on('line', (l) => {
+        execute(l, rope);
+    });
+}
 
 fileReadStream.on('close', () => {
     console.log(rope.getUniqueTailPositionCount());

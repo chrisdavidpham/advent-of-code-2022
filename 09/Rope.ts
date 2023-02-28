@@ -12,8 +12,6 @@ export class Rope {
 
     public moveNorth(): void {
         var newTailCoordinate = this._head.moveUp();
-        console.log("U " + this.toString());
-        console.log(this.draw());
         if (newTailCoordinate != null) {
             this._tailHistory.push(newTailCoordinate.copy());
         }
@@ -21,8 +19,6 @@ export class Rope {
 
     public moveEast(): void {
         var newTailCoordinate = this._head.moveRight();
-        console.log("R " + this.toString());
-        console.log(this.draw());
         if (newTailCoordinate != null) {
             this._tailHistory.push(newTailCoordinate.copy());
         }
@@ -30,8 +26,6 @@ export class Rope {
 
     public moveSouth(): void {
         var newTailCoordinate = this._head.moveDown();
-        console.log("D " + this.toString());
-        console.log(this.draw());
         if (newTailCoordinate != null) {
             this._tailHistory.push(newTailCoordinate.copy());
         }
@@ -39,15 +33,12 @@ export class Rope {
 
     public moveWest(): void {
         var newTailCoordinate = this._head.moveLeft();
-        console.log("L " + this.toString());
-        console.log(this.draw());
         if (newTailCoordinate != null) {
             this._tailHistory.push(newTailCoordinate.copy());
         }
     }
 
     public getUniqueTailPositionCount() {
-        console.log(this._tailHistory)
         return this._tailHistory.unique(Coordinate.compare).length;
     }
 
@@ -57,7 +48,7 @@ export class Rope {
             : new Array<Coordinate>(knot.position.copy());
     }
 
-    public toString(knot = this._head): string {
+    public toString(): string {
         var str = '';
         this.getCoordinates().forEach(c => {
             str = str.concat(`${c.x},${c.y} `);
@@ -68,12 +59,12 @@ export class Rope {
 
     public draw(): string {
         var grid = new Array<Array<string>>();
-        var offset = this.maxAbsoluteCoordinate();
+        var offset = this.getMaxAbsoluteCoordinate();
         var coordinates = this.getCoordinates();
 
-        for (var j = offset.y * 2; j >= 0; j--) {
+        for (var j = offset.y * 2 + 1; j >= 0; j--) {
                 grid[j] = new Array<string>();
-                for (var i = offset.x * 2; i >= 0; i--) {
+                for (var i = offset.x * 2 + 1; i >= 0; i--) {
                 grid[j][i] = '.';
             };
         };
@@ -81,7 +72,9 @@ export class Rope {
         var coordinates = this.getCoordinates(); 
         for (var n = 0; n < coordinates.length; n++) {
             var c = coordinates[n];
-            grid[c.y + offset.y][c.x + offset.x] = n.toString();
+            var x = c.x + offset.x;
+            var y = c.y + offset.y;
+            grid[y][x] = n.toString();
         };
 
         var rows = new Array<string>;
@@ -92,13 +85,13 @@ export class Rope {
         return rows.join('\r\n');
     }
 
-    private maxAbsoluteCoordinate(knot = this._head, xMax = 0, yMax = 0): Coordinate {
+    private getMaxAbsoluteCoordinate(knot = this._head, xMax = 0, yMax = 0): Coordinate {
         if (knot.tail != null) {
             var xAbs = Math.abs(knot.position.x);
             var yAbs = Math.abs(knot.position.y);
             xMax = xMax > xAbs ? xMax : xAbs;
             yMax = yMax > yAbs ? yMax : yAbs;
-            return this.maxAbsoluteCoordinate(knot.tail, xMax, yMax);
+            return this.getMaxAbsoluteCoordinate(knot.tail, xMax, yMax);
         } else {
             return new Coordinate(xMax, yMax);
         }
@@ -109,7 +102,6 @@ export class Rope {
     }
 
     private buildKnots(depth: number, currKnot: Knot): Knot {
-        console.log(`build knot ${depth}`)
         if (depth > 1) {
             var nextKnot = new Knot(currKnot);
             return this.buildKnots(depth - 1, nextKnot);

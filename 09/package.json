@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "solve": "npm run build && node ./dist/main.js"
+    "solve": "npm run build && node ./dist/main.js",
+    "draw": "npm run build && node ./dist/main.js -d"
   },
   "keywords": [],
   "author": "",
