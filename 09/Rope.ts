@@ -59,12 +59,16 @@ export class Rope {
 
     public draw(): string {
         var grid = new Array<Array<string>>();
-        var offset = this.getMaxAbsoluteCoordinate();
+        var maxAbsCoordinates = this.getMaxAbsoluteCoordinate();
+        var xOffset = maxAbsCoordinates.x + 1;
+        var yOffset = maxAbsCoordinates.y + 1;
+        var graphWidth = xOffset * 2;
+        var graphHeight = yOffset * 2;
         var coordinates = this.getCoordinates();
 
-        for (var j = offset.y * 2 + 1; j >= 0; j--) {
+        for (var j = graphHeight; j >= 0; j--) {
                 grid[j] = new Array<string>();
-                for (var i = offset.x * 2 + 1; i >= 0; i--) {
+                for (var i = graphWidth; i >= 0; i--) {
                 grid[j][i] = '.';
             };
         };
@@ -72,8 +76,8 @@ export class Rope {
         var coordinates = this.getCoordinates(); 
         for (var n = 0; n < coordinates.length; n++) {
             var c = coordinates[n];
-            var x = c.x + offset.x;
-            var y = c.y + offset.y;
+            var x = c.x + xOffset;
+            var y = c.y + yOffset;
             grid[y][x] = n.toString();
         };
 
