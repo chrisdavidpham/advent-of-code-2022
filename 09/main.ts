@@ -3,15 +3,33 @@ import * as readline from 'node:readline';
 import './arrayExtensions'
 import { Rope } from './rope';
 
-var shouldDraw = false;
-
-if (process.argv[2] && process.argv[2] === '-d') { 
-    shouldDraw = true;
-}
+var shouldDraw = process.argv[2] === '-d';
 
 const fileReadStream = readline.createInterface(fs.createReadStream('input.txt'));
 
+console.time('Time to solve');
+
 var rope = new Rope(10);
+
+if (shouldDraw)
+{
+    fileReadStream.on('line', (l) => {
+        console.log(`${l}: ${rope.toString()}`);
+        execute(l, rope);
+        console.log(rope.draw());
+    });
+}
+else
+{
+    fileReadStream.on('line', (l) => {
+        execute(l, rope);
+    });
+}
+
+fileReadStream.on('close', () => {
+    console.log(rope.getUniqueTailPositionCount());
+    console.timeEnd('Time to solve');
+});
 
 function execute(command: string, r: Rope): void {
     const split = command.split(' ');
@@ -35,22 +53,3 @@ function execute(command: string, r: Rope): void {
         }
     }
 }
-
-if (shouldDraw)
-{
-    fileReadStream.on('line', (l) => {
-        console.log(`${l}: ${rope.toString()}`);
-        execute(l, rope);
-        console.log(rope.draw());
-    });
-}
-else
-{
-    fileReadStream.on('line', (l) => {
-        execute(l, rope);
-    });
-}
-
-fileReadStream.on('close', () => {
-    console.log(rope.getUniqueTailPositionCount());
-});

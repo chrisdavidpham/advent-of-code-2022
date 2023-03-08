@@ -59,9 +59,9 @@ export class Rope {
 
     public draw(): string {
         var grid = new Array<Array<string>>();
-        var maxAbsCoordinates = this.getMaxAbsoluteCoordinate();
-        var xOffset = maxAbsCoordinates.x + 1;
-        var yOffset = maxAbsCoordinates.y + 1;
+        var minCoordinate = this.getMinCoordinate();
+        var xOffset = Math.abs(minCoordinate.x) + 1;
+        var yOffset = Math.abs(minCoordinate.y) + 1;
         var graphWidth = xOffset * 2;
         var graphHeight = yOffset * 2;
         var coordinates = this.getCoordinates();
@@ -89,15 +89,13 @@ export class Rope {
         return rows.join('\r\n');
     }
 
-    private getMaxAbsoluteCoordinate(knot = this._head, xMax = 0, yMax = 0): Coordinate {
+    private getMinCoordinate(knot = this._head, minX = this._head.position.x, minY = this._head.position.y): Coordinate {
         if (knot.tail != null) {
-            var xAbs = Math.abs(knot.position.x);
-            var yAbs = Math.abs(knot.position.y);
-            xMax = xMax > xAbs ? xMax : xAbs;
-            yMax = yMax > yAbs ? yMax : yAbs;
-            return this.getMaxAbsoluteCoordinate(knot.tail, xMax, yMax);
+            minX = minX < knot.position.x ? minX : knot.position.x;
+            minY = minY < knot.position.y ? minY : knot.position.y;
+            return this.getMinCoordinate(knot.tail, minX, minY);
         } else {
-            return new Coordinate(xMax, yMax);
+            return new Coordinate(minX, minY);
         }
     }
 
